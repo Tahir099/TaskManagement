@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: realtime_pg
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: tahir
+      POSTGRES_PASSWORD: tahir1234
+      POSTGRES_DB: collabdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
