@@ -4,7 +4,11 @@ import { ITaskService } from "./interfaces/ITaskService";
 
 export class TaskService implements ITaskService {
   constructor(private readonly taskRepository: ITaskRepository) {}
+
   getAllTasks(): Promise<Task[]> {
     return this.taskRepository.findAll();
+  }
+  createTask(data: Partial<Task>): Promise<Task> {
+    return this.taskRepository.create(data);
   }
 }

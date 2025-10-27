@@ -7,4 +7,10 @@ export class TaskController {
     const tasks = await this.taskService.getAllTasks();
     res.json(tasks);
   };
+
+  create = async (req: Request, res: Response) => {
+    const data = req.body;
+    const task = await this.taskService.createTask(data);
+    res.status(201).json(task);
+  };
 }
