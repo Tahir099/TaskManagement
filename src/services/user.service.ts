@@ -12,7 +12,7 @@ export class UserService implements IUserService {
 
   async getAllUser(): Promise<User[]> {
     return this.userRepository.findAll();
-  }
+  }          
 
   async getUserById(id: string): Promise<User | null> {
     return this.userRepository.findById(id);

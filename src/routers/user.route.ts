@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { UserController } from "../controllers/user.controller";
+import Container from "typedi";
 
 export class UserRouter {
   public readonly router: Router;
   public readonly controller: UserController;
 
-  constructor(controller: UserController) {
+  constructor(controller: UserController = Container.get(UserController)) {
     this.router = Router();
     this.controller = controller;
     this.initializeRoutes();
@@ -18,3 +19,5 @@ export class UserRouter {
     this.router.post("/", this.controller.create);
   }
 }
+
+export default new UserRouter().router;

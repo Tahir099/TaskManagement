@@ -32,5 +32,5 @@ export class UserController {
     const data = req.body;
     const user = await this.userService.createUser(data);
     res.status(201).json(user);
-  };   
+  };
 }
