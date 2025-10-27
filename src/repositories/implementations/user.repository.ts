@@ -2,7 +2,6 @@ import { BaseRepository } from "../base/base.repository";
 import { User } from "../../generated/prisma";
 import { IUserRepository } from "../interfaces/IUserRepository";
 import prisma from "../../config/prisma.config";
-import { Service } from "typedi";
 
 export class UserRepository
   extends BaseRepository<User>

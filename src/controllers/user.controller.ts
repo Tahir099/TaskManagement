@@ -1,9 +1,6 @@
-import { Inject, Service } from "typedi";
-import { UserService } from "../services/user.service";
 import { Request, Response } from "express";
 import { IUserService } from "../services/interfaces/IUserService";
 
-@Service()
 export class UserController {
   constructor(private readonly userService: IUserService) {}
 

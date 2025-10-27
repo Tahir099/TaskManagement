@@ -1,12 +1,9 @@
-import { Inject, Service } from "typedi";
 import { User } from "../generated/prisma";
 import { IUserService } from "./interfaces/IUserService";
 import { IUserRepository } from "../repositories/interfaces/IUserRepository";
 
 export class UserService implements IUserService {
-  constructor(
-    private readonly userRepository: IUserRepository 
-  ) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
   async getAllUser(): Promise<User[]> {
     return this.userRepository.findAll();
