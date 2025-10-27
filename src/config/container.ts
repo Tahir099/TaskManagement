@@ -28,7 +28,7 @@ Container.set<ITaskService>(
   new TaskService(Container.get<ITaskRepository>("TaskRepository"))
 );
 
-Container.set<TaskController>(
-  "TaskController",
+Container.set(
+  TaskController,
   new TaskController(Container.get<ITaskService>("TaskService"))
 );
