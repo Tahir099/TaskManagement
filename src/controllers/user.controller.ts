@@ -1,13 +1,11 @@
 import { Inject, Service } from "typedi";
-import { IUserService } from "../services/interfaces/IUserService";
+import { UserService } from "../services/user.service";
 import { Request, Response } from "express";
+import { IUserService } from "../services/interfaces/IUserService";
 
 @Service()
 export class UserController {
-  constructor(
-    @Inject("UserService")
-    private readonly userService: IUserService
-  ) {}
+  constructor(private readonly userService: IUserService) {}
 
   getAll = async (req: Request, res: Response) => {
     const users = await this.userService.getAllUser();

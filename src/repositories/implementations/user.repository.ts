@@ -4,7 +4,6 @@ import { IUserRepository } from "../interfaces/IUserRepository";
 import prisma from "../../config/prisma.config";
 import { Service } from "typedi";
 
-@Service("UserRepository")
 export class UserRepository
   extends BaseRepository<User>
   implements IUserRepository

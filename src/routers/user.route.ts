@@ -13,7 +13,7 @@ export class UserRouter {
   }
 
   private initializeRoutes(): void {
-    this.router.get("/", this.controller.getAll);
+    this.router.get("/" ,this.controller.getAll);
     this.router.get("/:id", this.controller.getByID);
     this.router.get("/email/:email", this.controller.getByEmail);
     this.router.post("/", this.controller.create);

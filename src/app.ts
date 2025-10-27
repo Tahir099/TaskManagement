@@ -4,7 +4,9 @@ import "./services/user.service";
 import "./controllers/user.controller";
 import app from "./server";
 import dotenv from "dotenv";
+import "./config/container"
 import UserRouter from "./routers/user.route";
+
 
 dotenv.config();
 
