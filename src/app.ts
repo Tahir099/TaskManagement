@@ -7,6 +7,8 @@ import "./services/task.service";
 import "./controllers/task.controller";
 import app from "./server";
 import dotenv from "dotenv";
+dotenv.config();
+
 import "./config/container";
 import UserRouter from "./routers/user.route";
 import TaskRouter from "./routers/task.route";
@@ -14,8 +16,8 @@ import { errorHandler } from "./errors/errorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
 import helmet from "helmet";
 import cors from "cors";
-dotenv.config();
-
+import { requestId } from "./middlewares/request-id";
+import { httpLogger } from "./middlewares/logger";
 
 app.use(helmet());
 app.use(
@@ -25,8 +27,11 @@ app.use(
   })
 );
 
+app.use(requestId());
+app.use(httpLogger);
+
 app.use("/users", UserRouter);
-app.use("/task", TaskRouter);
+app.use("/tasks", TaskRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
