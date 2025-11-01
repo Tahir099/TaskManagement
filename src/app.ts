@@ -12,13 +12,23 @@ import UserRouter from "./routers/user.route";
 import TaskRouter from "./routers/task.route";
 import { errorHandler } from "./errors/errorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
-
+import helmet from "helmet";
+import cors from "cors";
 dotenv.config();
+
+
+app.use(helmet());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  })
+);
 
 app.use("/users", UserRouter);
 app.use("/task", TaskRouter);
 
-app.use(notFoundHandler)
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;

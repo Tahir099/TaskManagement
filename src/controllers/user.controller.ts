@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { IUserService } from "../services/interfaces/IUserService";
-import { asyncHandler } from "../middlewares/asynchHandler";
+import { asyncHandler } from "../middlewares/asyncHandler";
 import { AppError } from "../errors/AppError";
 
 export class UserController {
@@ -18,16 +18,16 @@ export class UserController {
     res.json(user);
   });
 
-  getByEmail = async (req: Request, res: Response) => {
+  getByEmail = asyncHandler(async (req: Request, res: Response) => {
     const { email } = req.params;
     const user = await this.userService.getUserByEmail(email);
     if (!user) throw new AppError("User not found", 404);
     res.json(user);
-  };
+  });
 
-  create = async (req: Request, res: Response) => {
+  create = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
     const user = await this.userService.createUser(data);
     res.status(201).json(user);
-  };
+  });
 }

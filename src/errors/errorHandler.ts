@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "./AppError";
-import { stat } from "fs";
 
 export function errorHandler(
   err: any,

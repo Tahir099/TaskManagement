@@ -1,4 +1,4 @@
-import { asyncHandler } from "../middlewares/asynchHandler";
+import { asyncHandler } from "../middlewares/asyncHandler";
 import { ITaskService } from "../services/interfaces/ITaskService";
 import { Request, Response } from "express";
 
