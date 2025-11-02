@@ -9,6 +9,9 @@ import { TaskRepository } from "../repositories/implementations/task.repository"
 import { ITaskService } from "../services/interfaces/ITaskService";
 import { TaskService } from "../services/task.service";
 import { TaskController } from "../controllers/task.controller";
+import { IAuthService } from "../services/interfaces/IAuthService";
+import { AuthService } from "../services/auth.service";
+import { AuthController } from "../controllers/auth.controller";
 
 //User Container
 Container.set<IUserRepository>("UserRepository", new UserRepository());
@@ -31,4 +34,15 @@ Container.set<ITaskService>(
 Container.set(
   TaskController,
   new TaskController(Container.get<ITaskService>("TaskService"))
+);
+
+//Auth Container
+Container.set<IAuthService>(
+  "AuthService",
+  new AuthService(Container.get<IUserRepository>("UserRepository"))
+);
+
+Container.set(
+  AuthController,
+  new AuthController(Container.get<IAuthService>("AuthService"))
 );

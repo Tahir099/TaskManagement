@@ -5,13 +5,15 @@ import "./controllers/user.controller";
 import "./repositories/implementations/task.repository";
 import "./services/task.service";
 import "./controllers/task.controller";
+import "./services/auth.service";
+import "./controllers/auth.controller";
 import app from "./server";
 import dotenv from "dotenv";
 dotenv.config();
-
 import "./config/container";
 import UserRouter from "./routers/user.route";
 import TaskRouter from "./routers/task.route";
+import AuthRouter from "./routers/auth.route";
 import { errorHandler } from "./errors/errorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
 import helmet from "helmet";
@@ -30,6 +32,7 @@ app.use(
 app.use(requestId());
 app.use(httpLogger);
 
+app.use("/auth", AuthRouter);
 app.use("/users", UserRouter);
 app.use("/tasks", TaskRouter);
 
