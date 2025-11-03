@@ -6,6 +6,7 @@ export class AppError extends Error {
     public isOperational = true
   ) {
     super(message);
-    Error.captureStackTrace(this , this.constructor)
+    Error.captureStackTrace(this, this.constructor);
   }
 }
+

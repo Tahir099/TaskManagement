@@ -8,14 +8,8 @@ export interface IAuthService {
     roleId: string
   ): Promise<User>;
 
-//   login(
-//     email: string,
-//     password: string
-//   ): Promise<{ accessToken: string; refreshToken: string }>;
-
-//   refreshTokens(
-//     refreshToken: string
-//   ): Promise<{ accessToken: string; refreshToken: string }>;
-
-//   logOut(sessionId: string): Promise<void>;
+  login(
+    email: string,
+    password: string
+  ): Promise<{ accessToken: string; refreshToken: string }>;
 }
