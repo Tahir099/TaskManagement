@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
 import prisma from "../config/prisma.config";
 import { v4 as uuid } from "uuid";
-import { logger } from "../config/logger";
 
 export class AuthService implements IAuthService {
   constructor(private readonly userRepository: IUserRepository) {}
@@ -28,7 +27,7 @@ export class AuthService implements IAuthService {
       password: hashedPassword,
       name,
       roleId,
-    });
+    }); 
 
     return user;
   }

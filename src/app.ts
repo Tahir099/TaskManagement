@@ -20,6 +20,7 @@ import helmet from "helmet";
 import cors from "cors";
 import { requestId } from "./middlewares/request-id";
 import { httpLogger } from "./middlewares/logger";
+import { Authenticate } from "./middlewares/authorize";
 
 app.use(helmet());
 app.use(
@@ -34,7 +35,7 @@ app.use(httpLogger);
 
 app.use("/auth", AuthRouter);
 app.use("/users", UserRouter);
-app.use("/tasks", TaskRouter);
+app.use("/tasks", Authenticate, TaskRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
