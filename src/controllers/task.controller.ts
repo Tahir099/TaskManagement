@@ -1,9 +1,11 @@
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { ITaskService } from "../services/interfaces/ITaskService";
 import { Request, Response } from "express";
+import { Service, Inject } from "typedi";
 
+@Service()
 export class TaskController {
-  constructor(private readonly taskService: ITaskService) {}
+  constructor(@Inject("TaskService") private readonly taskService: ITaskService) {}
   getAll = asyncHandler(async (req: Request, res: Response) => {
     const tasks = await this.taskService.getAllTasks();
     res.json(tasks);

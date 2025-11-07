@@ -2,9 +2,11 @@ import { AppError } from "../errors/AppError";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { Request, Response } from "express";
 import { IAuthService } from "../services/interfaces/IAuthService";
+import { Service, Inject } from "typedi";
 
+@Service()
 export class AuthController {
-  constructor(private readonly authService: IAuthService) {}
+  constructor(@Inject("AuthService") private readonly authService: IAuthService) {}
 
   register = asyncHandler(async (req: Request, res: Response) => {
     const { email, password, name, roleId } = req.body;

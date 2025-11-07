@@ -1,48 +1,17 @@
-import { Container } from "typedi";
-import { IUserRepository } from "../repositories/interfaces/IUserRepository";
-import { UserRepository } from "../repositories/implementations/user.repository";
-import { IUserService } from "../services/interfaces/IUserService";
-import { UserService } from "../services/user.service";
-import { UserController } from "../controllers/user.controller";
-import { ITaskRepository } from "../repositories/interfaces/ITaskRepository";
-import { TaskRepository } from "../repositories/implementations/task.repository";
-import { ITaskService } from "../services/interfaces/ITaskService";
-import { TaskService } from "../services/task.service";
-import { TaskController } from "../controllers/task.controller";
-import { IAuthService } from "../services/interfaces/IAuthService";
-import { AuthService } from "../services/auth.service";
-import { AuthController } from "../controllers/auth.controller";
+// TypeDI decorator'ları (@Service, @Inject) kullanıldığında,
+// sınıfların import edilmesi gerekiyor ki decorator'lar çalışsın.
+// Tüm DI ile ilgili import'lar burada toplanıyor.
 
-//User Container
-Container.set<IUserRepository>("UserRepository", new UserRepository());
-Container.set<IUserService>(
-  "UserService",
-  new UserService(Container.get<IUserRepository>("UserRepository"))
-);
-Container.set(
-  UserController,
-  new UserController(Container.get<IUserService>("UserService"))
-);
+// Repository'ler
+import "../repositories/implementations/user.repository";
+import "../repositories/implementations/task.repository";
 
-//Task Container
-Container.set<ITaskRepository>("TaskRepository", new TaskRepository());
-Container.set<ITaskService>(
-  "TaskService",
-  new TaskService(Container.get<ITaskRepository>("TaskRepository"))
-);
+// Service'ler
+import "../services/user.service";
+import "../services/task.service";
+import "../services/auth.service";
 
-Container.set(
-  TaskController,
-  new TaskController(Container.get<ITaskService>("TaskService"))
-);
-
-//Auth Container
-Container.set<IAuthService>(
-  "AuthService",
-  new AuthService(Container.get<IUserRepository>("UserRepository"))
-);
-
-Container.set(
-  AuthController,
-  new AuthController(Container.get<IAuthService>("AuthService"))
-);
+// Controller'lar
+import "../controllers/user.controller";
+import "../controllers/task.controller";
+import "../controllers/auth.controller";

@@ -7,9 +7,11 @@ import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
 import prisma from "../config/prisma.config";
 import { v4 as uuid } from "uuid";
+import { Service, Inject } from "typedi";
 
+@Service("AuthService")
 export class AuthService implements IAuthService {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(@Inject("UserRepository") private readonly userRepository: IUserRepository) {}
 
   async register(
     email: string,

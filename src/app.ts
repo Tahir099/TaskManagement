@@ -1,16 +1,8 @@
 import "reflect-metadata";
-import "./repositories/implementations/user.repository";
-import "./services/user.service";
-import "./controllers/user.controller";
-import "./repositories/implementations/task.repository";
-import "./services/task.service";
-import "./controllers/task.controller";
-import "./services/auth.service";
-import "./controllers/auth.controller";
+import "./config/container";
 import app from "./server";
 import dotenv from "dotenv";
 dotenv.config();
-import "./config/container";
 import UserRouter from "./routers/user.route";
 import TaskRouter from "./routers/task.route";
 import AuthRouter from "./routers/auth.route";

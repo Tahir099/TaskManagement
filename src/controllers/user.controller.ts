@@ -2,9 +2,11 @@ import { Request, Response } from "express";
 import { IUserService } from "../services/interfaces/IUserService";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { AppError } from "../errors/AppError";
+import { Service, Inject } from "typedi";
 
+@Service()
 export class UserController {
-  constructor(private readonly userService: IUserService) {}
+  constructor(@Inject("UserService") private readonly userService: IUserService) {}
 
   getAll = asyncHandler(async (req: Request, res: Response) => {
     const users = await this.userService.getAllUser();

@@ -6,7 +6,7 @@ export class TaskRouter {
   public readonly router: Router;
   public readonly controller: TaskController;
 
-  constructor(controller: TaskController = Container.get(TaskController)) {
+  constructor(controller: TaskController) {
     this.router = Router();
     this.controller = controller;
     this.initializeRoutes();
@@ -18,4 +18,4 @@ export class TaskRouter {
   }
 }
 
-export default new TaskRouter().router;
+export default new TaskRouter(Container.get(TaskController)).router;

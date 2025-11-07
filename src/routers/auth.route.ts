@@ -6,7 +6,7 @@ export class AuthRouter {
   public readonly router: Router;
   public readonly controller: AuthController;
 
-  constructor(controller: AuthController = Container.get(AuthController)) {
+  constructor(controller: AuthController) {
     this.router = Router();
     this.controller = controller;
     this.initializeRoutes();
@@ -18,4 +18,4 @@ export class AuthRouter {
   }
 }
 
-export default new AuthRouter().router;
+export default new AuthRouter(Container.get(AuthController)).router;
