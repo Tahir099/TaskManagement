@@ -1,17 +1,18 @@
 import { AppError } from "../errors/AppError";
 import { User } from "../generated/prisma";
 import { IUserRepository } from "../repositories/interfaces/IUserRepository";
+import { ISessionRepository } from "../repositories/interfaces/ISessionRepository";
 import { IAuthService } from "./interfaces/IAuthService";
 import { config } from "../config/index";
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
-import prisma from "../config/prisma.config";
 import { v4 as uuid } from "uuid";
-import { Service, Inject } from "typedi";
 
-@Service("AuthService")
 export class AuthService implements IAuthService {
-  constructor(@Inject("UserRepository") private readonly userRepository: IUserRepository) {}
+  constructor(
+    private readonly userRepository: IUserRepository,
+    private readonly sessionRepository: ISessionRepository
+  ) {}
 
   async register(
     email: string,
@@ -29,7 +30,7 @@ export class AuthService implements IAuthService {
       password: hashedPassword,
       name,
       roleId,
-    }); 
+    });
 
     return user;
   }
@@ -56,14 +57,12 @@ export class AuthService implements IAuthService {
       { expiresIn: config.jwt.refreshExpiresIn as SignOptions["expiresIn"] }
     );
 
-    await prisma.session.create({
-      data: {
-        id: uuid(),
-        userId: user.id,
-        accessToken,
-        refreshToken,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      },
+    await this.sessionRepository.create({
+      id: uuid(),
+      userId: user.id,
+      accessToken,
+      refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
 
     return { accessToken, refreshToken };

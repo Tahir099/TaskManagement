@@ -1,21 +1,11 @@
 import { Router } from "express";
-import Container from "typedi";
 import { TaskController } from "../controllers/task.controller";
 
-export class TaskRouter {
-  public readonly router: Router;
-  public readonly controller: TaskController;
+export function createTaskRouter(controller: TaskController): Router {
+  const router = Router();
 
-  constructor(controller: TaskController) {
-    this.router = Router();
-    this.controller = controller;
-    this.initializeRoutes();
-  }
+  router.get("/", controller.getAll);
+  router.post("/", controller.create);
 
-  private initializeRoutes(): void {
-    this.router.get("/", this.controller.getAll);
-    this.router.post("/", this.controller.create);
-  }
+  return router;
 }
-
-export default new TaskRouter(Container.get(TaskController)).router;

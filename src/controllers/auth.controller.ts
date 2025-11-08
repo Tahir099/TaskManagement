@@ -2,11 +2,9 @@ import { AppError } from "../errors/AppError";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { Request, Response } from "express";
 import { IAuthService } from "../services/interfaces/IAuthService";
-import { Service, Inject } from "typedi";
 
-@Service()
 export class AuthController {
-  constructor(@Inject("AuthService") private readonly authService: IAuthService) {}
+  constructor(private readonly authService: IAuthService) {}
 
   register = asyncHandler(async (req: Request, res: Response) => {
     const { email, password, name, roleId } = req.body;
@@ -37,10 +35,4 @@ export class AuthController {
       refreshToken,
     });
   });
-  // getByID = asyncHandler(async (req: Request, res: Response) => {
-  //   const { id } = req.params;
-  //   const user = await this.userService.getUserById(id);
-  //   if (!user) throw new AppError("User not found", 404);
-  //   res.json(user);
-  // });
 }

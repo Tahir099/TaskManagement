@@ -1,21 +1,11 @@
 import { Router } from "express";
-import Container from "typedi";
 import { AuthController } from "../controllers/auth.controller";
 
-export class AuthRouter {
-  public readonly router: Router;
-  public readonly controller: AuthController;
+export function createAuthRouter(controller: AuthController): Router {
+  const router = Router();
 
-  constructor(controller: AuthController) {
-    this.router = Router();
-    this.controller = controller;
-    this.initializeRoutes();
-  }
+  router.post("/register", controller.register);
+  router.post("/login", controller.login);
 
-  private initializeRoutes(): void {
-    this.router.post("/register", this.controller.register);
-    this.router.post("/login", this.controller.login);
-  }
+  return router;
 }
-
-export default new AuthRouter(Container.get(AuthController)).router;

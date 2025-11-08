@@ -1,18 +1,15 @@
 import "reflect-metadata";
-import "./config/container";
 import app from "./server";
 import dotenv from "dotenv";
-dotenv.config();
-import UserRouter from "./routers/user.route";
-import TaskRouter from "./routers/task.route";
-import AuthRouter from "./routers/auth.route";
+import { authRouter, userRouter, taskRouter, Authenticate } from "./config/container";
 import { errorHandler } from "./errors/errorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
 import helmet from "helmet";
 import cors from "cors";
 import { requestId } from "./middlewares/request-id";
 import { httpLogger } from "./middlewares/logger";
-import { Authenticate } from "./middlewares/authorize";
+
+dotenv.config();
 
 app.use(helmet());
 app.use(
@@ -25,9 +22,9 @@ app.use(
 app.use(requestId());
 app.use(httpLogger);
 
-app.use("/auth", AuthRouter);
-app.use("/users", UserRouter);
-app.use("/tasks", Authenticate, TaskRouter);
+app.use("/auth", authRouter);
+app.use("/users", userRouter);
+app.use("/tasks", Authenticate, taskRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
