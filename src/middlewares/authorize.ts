@@ -33,8 +33,8 @@ export function createAuthenticateMiddleware(
         token
       );
 
-      if (!session) {
-        return next(new AppError("Session invalid", 401));
+      if (!session || !session.isActive || session.expiresAt < new Date()) {
+        return next(new AppError("Session expired or invalid", 401));
       }
 
       req.user = {

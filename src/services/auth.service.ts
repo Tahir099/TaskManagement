@@ -46,7 +46,7 @@ export class AuthService implements IAuthService {
       throw new AppError("Email or password is not valid", 401);
 
     const accessToken = jwt.sign(
-      { userID: user.id, email: user.email },
+      { userId: user.id, email: user.email },
       config.jwt.accessSecret,
       { expiresIn: config.jwt.expiresIn as SignOptions["expiresIn"] }
     );
