@@ -33,6 +33,6 @@ export class AuthController {
     res.status(201).json({
       accessToken,
       refreshToken,
-    });
+    }); 
   });
 }
