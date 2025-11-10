@@ -2,16 +2,23 @@ import { AppError } from "../errors/AppError";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { Request, Response } from "express";
 import { IAuthService } from "../services/interfaces/IAuthService";
+import { RegisterDto } from "../dto/auth/register.dto";
+import { LoginDto } from "../dto/auth/login.dto";
 
 export class AuthController {
   constructor(private readonly authService: IAuthService) {}
 
   register = asyncHandler(async (req: Request, res: Response) => {
-    const { email, password, name, roleId } = req.body;
+    const parsedBody = RegisterDto.safeParse(req.body);
 
-    if (!email || !password || !name || !roleId) {
-      throw new AppError("All fields is required", 400);
+    if (!parsedBody.success) {
+      const errorMessages = parsedBody.error.issues.map(
+        (issue) => issue.message
+      );
+      throw new AppError(errorMessages.join(", "), 400);
     }
+
+    const { email, password, name, roleId } = parsedBody.data;
 
     const user = await this.authService.register(email, password, name, roleId);
     res.status(201).json({
@@ -21,18 +28,24 @@ export class AuthController {
   });
 
   login = asyncHandler(async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      throw new AppError("Username and password are required", 400);
+    const parsedBody = LoginDto.safeParse(req.body);
+    if (!parsedBody.success) {
+      const errorMessage = parsedBody.error.issues.map(
+        (issue) => issue.message
+      );
+      throw new AppError(errorMessage.join(", "), 400);
     }
+
+    const { email, password } = parsedBody.data;
+
     const { accessToken, refreshToken } = await this.authService.login(
       email,
       password
     );
-    
+
     res.status(201).json({
       accessToken,
       refreshToken,
-    }); 
+    });
   });
 }
