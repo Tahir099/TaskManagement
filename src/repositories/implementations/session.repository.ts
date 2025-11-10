@@ -19,6 +19,8 @@ export class SessionRepository
       where: { userId: userId, accessToken: token },
       select: {
         id: true,
+        expiresAt: true,
+        isActive: true,
         user: { select: { id: true, email: true, roleId: true } },
       },
     });
