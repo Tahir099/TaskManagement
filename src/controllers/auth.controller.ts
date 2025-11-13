@@ -1,4 +1,3 @@
-import { AppError } from "../errors/AppError";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { Request, Response } from "express";
 import { IAuthService } from "../services/interfaces/IAuthService";
