@@ -1,7 +1,13 @@
 import "reflect-metadata";
 import app from "./server";
 import dotenv from "dotenv";
-import { authRouter, userRouter, taskRouter, Authenticate } from "./config/container";
+import {
+  authRouter,
+  userRouter,
+  taskRouter,
+  Authenticate,
+  organizationRouter,
+} from "./config/container";
 import { errorHandler } from "./errors/errorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
 import helmet from "helmet";
@@ -25,6 +31,7 @@ app.use(httpLogger);
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/tasks", Authenticate, taskRouter);
+app.use("/organization", Authenticate, organizationRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

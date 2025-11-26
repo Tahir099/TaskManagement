@@ -15,3 +15,4 @@ export class UserRepository
     return this.prismaModel.findUnique({ where: { email } });
   }
 }
+     

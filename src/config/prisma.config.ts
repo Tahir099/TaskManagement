@@ -9,7 +9,7 @@ class PrismaSingleton {
     if (!PrismaSingleton.instance) {
       PrismaSingleton.instance = new PrismaClient({
         errorFormat:
-          process.env.NODE_ENV === "development" ? "pretty" : "minimal",
+          process.env.NaODE_ENV === "development" ? "pretty" : "minimal",
       });
 
       this.setupShutdownHandlers();
