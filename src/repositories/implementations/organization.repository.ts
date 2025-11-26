@@ -10,4 +10,16 @@ export class OrganizationRepository
   constructor() {
     super(prisma.organization);
   }
+
+  findByUserId(userId: string): Promise<Organization[]> {
+    return this.prismaModel.findMany({
+      where: {
+        members: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    });
+  }
 }

@@ -127,7 +127,7 @@ model OrganizationMember {
   id      String @id @default(uuid())
   orgId   String 
   organization    Organization @relation(fields: [orgId], references: [id])
-  userId String
+  userId  String
   user    User @relation(fields: [userId] , references: [id])
 }
 

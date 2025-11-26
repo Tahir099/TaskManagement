@@ -7,5 +7,6 @@ export function createOrganizationRouter(
   const router = Router();
 
   router.post("/", controller.create);
+  router.get("/me", controller.getByUserId);
   return router;
 }

@@ -1,4 +1,5 @@
 import { asyncHandler } from "../middlewares/asyncHandler";
+import { AuthenticatedRequest } from "../middlewares/authorize";
 import { IOrganizationService } from "../services/interfaces/IOrganizationService";
 import { Request, Response } from "express";
 
@@ -11,4 +12,13 @@ export class OrganizationController {
     );
     res.status(201).json(organization);
   });
+
+  getByUserId = asyncHandler(
+    async (req: AuthenticatedRequest, res: Response) => {
+      const userId = req.user!.id;
+      const organizations = await this.organizationService.getByUserId(userId);
+
+      res.json(organizations);
+    }
+  );
 }

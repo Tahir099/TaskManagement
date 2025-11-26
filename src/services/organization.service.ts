@@ -10,4 +10,7 @@ export class OrganizationService implements IOrganizationService {
   createOrganization(data: Partial<Organization>): Promise<Organization> {
     return this.organizationRepository.create(data);
   }
+  getByUserId(userId: string): Promise<Organization[]> {
+    return this.organizationRepository.findByUserId(userId);
+  }
 }
