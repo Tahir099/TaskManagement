@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "./AppError";
+import { mapPrismaError } from "./prisma";
 
 export function errorHandler(
   err: any,
@@ -7,6 +8,10 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
+  const prismaError = mapPrismaError(err);
+  if (prismaError) {
+    err = prismaError;
+  }
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       status: "error",

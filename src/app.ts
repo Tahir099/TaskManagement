@@ -31,7 +31,7 @@ app.use(httpLogger);
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/tasks", Authenticate, taskRouter);
-app.use("/organization", Authenticate, organizationRouter);
+app.use("/organizations", Authenticate, organizationRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

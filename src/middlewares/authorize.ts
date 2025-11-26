@@ -34,12 +34,6 @@ export function createAuthenticateMiddleware(
       );
 
       if (!session || !session.isActive || session.expiresAt < new Date()) {
-        console.log("----------", {
-          session,
-          expired: session?.expiresAt,
-          isActive: session?.isActive,
-          date: new Date(),
-        });
         return next(new AppError("Session expired or invalid", 401));
       }
 

@@ -3,4 +3,4 @@ import { IBaseRepository } from "./IBaseRepository";
 
 export interface IOrganizationRepository extends IBaseRepository<Organization>{
     
-}
+}          
