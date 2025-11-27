@@ -1,7 +1,7 @@
+import { Request, Response } from "express";
 import { asyncHandler } from "../middlewares/asyncHandler";
 import { AuthenticatedRequest } from "../middlewares/authorize";
 import { IOrganizationService } from "../services/interfaces/IOrganizationService";
-import { Request, Response } from "express";
 
 export class OrganizationController {
   constructor(private readonly organizationService: IOrganizationService) {}
@@ -21,4 +21,16 @@ export class OrganizationController {
       res.json(organizations);
     }
   );
+
+  addMember = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user!.id;
+    const organizationId = req.params.organizationId;
+
+    const organizationMember = await this.organizationService.addMember(
+      organizationId,
+      userId
+    );
+
+    res.status(201).json(organizationMember);
+  });
 }

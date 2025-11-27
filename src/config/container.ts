@@ -15,18 +15,23 @@ import { OrganizationRepository } from "../repositories/implementations/organiza
 import { OrganizationService } from "../services/organization.service";
 import { OrganizationController } from "../controllers/organization.controller";
 import { createOrganizationRouter } from "../routers/organization.route";
+import { OrganizationMemberRepository } from "../repositories/implementations/organization-member.repository";
 
 // Repositories
 const userRepository = new UserRepository();
 const taskRepository = new TaskRepository();
 const sessionRepository = new SessionRepository();
 const organizationRepository = new OrganizationRepository();
-       
+const organizationMemberRepository = new OrganizationMemberRepository();
+
 // Services
 const userService = new UserService(userRepository);
 const taskService = new TaskService(taskRepository);
 const authService = new AuthService(userRepository, sessionRepository);
-const organizationService = new OrganizationService(organizationRepository);
+const organizationService = new OrganizationService(
+  organizationRepository,
+  organizationMemberRepository
+);
 
 // Controllers
 const userController = new UserController(userService);

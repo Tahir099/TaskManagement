@@ -1,4 +1,4 @@
-import { Board } from "@prisma/client";
+import { Board } from "../../generated/prisma";
 import { BaseRepository } from "../base/base.repository";
 import { IBoardRepository } from "../interfaces/IBoardRepository";
 import prisma from "../../config/prisma.config";
