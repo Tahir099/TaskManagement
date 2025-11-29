@@ -28,10 +28,35 @@ export class AuthController {
       email,
       password
     );
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.status(201).json({
       accessToken,
-      refreshToken,
+    });
+  });
+
+  refresh = asyncHandler(async (req: Request, res: Response) => {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
+      res.status(401).json({ message: "Refresh token not found" });
+      return;
+    }
+    const tokens = await this.authService.refreshToken(refreshToken);
+
+    res.cookie("refreshToken", tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      accessToken: tokens.accessToken,
     });
   });
 }

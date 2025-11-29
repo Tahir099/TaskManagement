@@ -12,4 +12,8 @@ export interface IAuthService {
     email: string,
     password: string
   ): Promise<{ accessToken: string; refreshToken: string }>;
+
+  refreshToken(
+    token: string
+  ): Promise<{ accessToken: string; refreshToken: string }>;
 }

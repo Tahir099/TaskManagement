@@ -67,4 +67,49 @@ export class AuthService implements IAuthService {
 
     return { accessToken, refreshToken };
   }
+
+
+  async refreshToken(token: string): Promise<{ accessToken: string; refreshToken: string; }> {
+    try{
+      const decoded = jwt.verify(token , config.jwt.refreshSecret) as {
+        userId:string
+      }
+
+      const session = await this.sessionRepository.findByRefreshToken(token)
+
+      if(!session || !session.isActive){
+        throw new AppError("Invalid session" , 401)
+      }
+
+      if(session.userId !== decoded.userId){
+        throw new AppError("Invalid token ownership" , 401)
+      }
+
+      if(new Date() > session.expiresAt){
+        throw new AppError("Session expired" , 401)
+      }
+
+      const newAccessToken = jwt.sign(
+        {userId:session.userId} , config.jwt.accessSecret, {expiresIn:config.jwt.expiresIn as SignOptions["expiresIn"]}
+      )
+
+      const newRefreshToken = jwt.sign({userId:session.userId} , config.jwt.refreshSecret , {expiresIn:config.jwt.refreshExpiresIn as SignOptions["expiresIn"]})
+
+
+      await this.sessionRepository.update(session.id , {
+        accessToken:newAccessToken , 
+        refreshToken:newRefreshToken,
+        lastActivityAt:new Date()
+      })
+
+      return {
+        accessToken:newAccessToken,
+        refreshToken:newRefreshToken
+      }
+    }catch(err){
+      throw new AppError("Invalid or expired refresh token" , 401)
+    }
+  }
+
+  
 }

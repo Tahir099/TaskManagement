@@ -25,4 +25,13 @@ export class SessionRepository
       },
     });
   }
+
+  findByRefreshToken(
+    token: string
+  ): Promise<(Session & { user: User }) | null> {
+    return this.prismaModel.findFirst({
+      where: { refreshToken: token },
+      include: { user: true },
+    });
+  }
 }
