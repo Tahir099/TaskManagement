@@ -16,6 +16,10 @@ import { OrganizationService } from "../services/organization.service";
 import { OrganizationController } from "../controllers/organization.controller";
 import { createOrganizationRouter } from "../routers/organization.route";
 import { OrganizationMemberRepository } from "../repositories/implementations/organization-member.repository";
+import { BoardRepository } from "../repositories/implementations/board.repository";
+import { BoardService } from "../services/Board.service";
+import { BoardController } from "../controllers/board.controller";
+import { createBoardRouter } from "../routers/board.route";
 
 // Repositories
 const userRepository = new UserRepository();
@@ -23,7 +27,7 @@ const taskRepository = new TaskRepository();
 const sessionRepository = new SessionRepository();
 const organizationRepository = new OrganizationRepository();
 const organizationMemberRepository = new OrganizationMemberRepository();
-
+const boardRepository = new BoardRepository();
 // Services
 const userService = new UserService(userRepository);
 const taskService = new TaskService(taskRepository);
@@ -32,12 +36,14 @@ const organizationService = new OrganizationService(
   organizationRepository,
   organizationMemberRepository
 );
+const boardService = new BoardService(boardRepository);
 
 // Controllers
 const userController = new UserController(userService);
 const taskController = new TaskController(taskService);
 const authController = new AuthController(authService);
 const organizationController = new OrganizationController(organizationService);
+const boardController = new BoardController(boardService);
 
 // Routers
 export const userRouter = createUserRouter(userController);
@@ -46,6 +52,7 @@ export const authRouter = createAuthRouter(authController);
 export const organizationRouter = createOrganizationRouter(
   organizationController
 );
+export const boardRouter = createBoardRouter(boardController);
 
 // Middlewares
 export const Authenticate = createAuthenticateMiddleware(sessionRepository);

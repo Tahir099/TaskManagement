@@ -7,6 +7,7 @@ import {
   taskRouter,
   Authenticate,
   organizationRouter,
+  boardRouter,
 } from "./config/container";
 import { errorHandler } from "./errors/errorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
@@ -34,6 +35,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/tasks", Authenticate, taskRouter);
 app.use("/organizations", Authenticate, organizationRouter);
+app.use("/boards", Authenticate, boardRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

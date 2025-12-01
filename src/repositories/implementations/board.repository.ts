@@ -10,4 +10,11 @@ export class BoardRepository
   constructor() {
     super(prisma.board);
   }
+
+  async findByOrganizationId(organizationId: string): Promise<Board[]> {
+    return this.prismaModel.findMany({
+      where: { organizationId },
+      include: { tasks: true },
+    });
+  }
 }
