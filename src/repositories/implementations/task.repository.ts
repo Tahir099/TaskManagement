@@ -10,10 +10,4 @@ export class TaskRepository
   constructor() {
     super(prisma.task);
   }
-
-  async findByUserId(userId: string): Promise<Task[] | null> {
-    return this.prismaModel.findMany({
-      where: { creatorId: userId },
-    });
-  }
 }
