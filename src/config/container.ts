@@ -20,6 +20,8 @@ import { BoardRepository } from "../repositories/implementations/board.repositor
 import { BoardService } from "../services/Board.service";
 import { BoardController } from "../controllers/board.controller";
 import { createBoardRouter } from "../routers/board.route";
+import { MemberShipService } from "../services/membership.service";
+import { OrganizationGuard } from "../guards/organization.guard";
 
 // Repositories
 const userRepository = new UserRepository();
@@ -28,6 +30,7 @@ const sessionRepository = new SessionRepository();
 const organizationRepository = new OrganizationRepository();
 const organizationMemberRepository = new OrganizationMemberRepository();
 const boardRepository = new BoardRepository();
+
 // Services
 const userService = new UserService(userRepository);
 const taskService = new TaskService(taskRepository);
@@ -37,6 +40,7 @@ const organizationService = new OrganizationService(
   organizationMemberRepository
 );
 const boardService = new BoardService(boardRepository);
+const membershipService = new MemberShipService(organizationMemberRepository);
 
 // Controllers
 const userController = new UserController(userService);
@@ -45,6 +49,12 @@ const authController = new AuthController(authService);
 const organizationController = new OrganizationController(organizationService);
 const boardController = new BoardController(boardService);
 
+// Guards
+export const orgGuard = new OrganizationGuard(membershipService);
+
+// Middlewares
+export const Authenticate = createAuthenticateMiddleware(sessionRepository);
+
 // Routers
 export const userRouter = createUserRouter(userController);
 export const taskRouter = createTaskRouter(taskController);
@@ -52,7 +62,4 @@ export const authRouter = createAuthRouter(authController);
 export const organizationRouter = createOrganizationRouter(
   organizationController
 );
-export const boardRouter = createBoardRouter(boardController);
-
-// Middlewares
-export const Authenticate = createAuthenticateMiddleware(sessionRepository);
+export const boardRouter = createBoardRouter(boardController, orgGuard);

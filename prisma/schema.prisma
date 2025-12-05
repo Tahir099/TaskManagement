@@ -125,10 +125,21 @@ model Organization{
 
 model OrganizationMember {
   id      String @id @default(uuid())
+
+
   orgId   String 
   organization    Organization @relation(fields: [orgId], references: [id])
+
+
   userId  String
   user    User @relation(fields: [userId] , references: [id])
+
+  role   OrganizationRole @default(MEMBER)
+  joinedAt  DateTime @default(now())
+
+  @@unique([orgId , userId])
+  @@index([orgId])
+  @@index([userId])
 }
 
 
@@ -146,4 +157,12 @@ enum TaskPriority {
   MEDIUM
   HIGH
   CRITICAL
+}
+
+
+enum OrganizationRole {
+  OWNER 
+  ADMIN
+  MEMBER
+  VIEWER
 }
