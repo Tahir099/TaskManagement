@@ -1,9 +1,9 @@
 import { UserRepository } from "../repositories/implementations/user.repository";
 import { TaskRepository } from "../repositories/implementations/task.repository";
 import { SessionRepository } from "../repositories/implementations/session.repository";
-import { UserService } from "../services/user.service";
-import { TaskService } from "../services/task.service";
-import { AuthService } from "../services/auth.service";
+import { UserService } from "../services/implementations/user.service";
+import { TaskService } from "../services/implementations/task.service";
+import { AuthService } from "../services/implementations/auth.service";
 import { UserController } from "../controllers/user.controller";
 import { TaskController } from "../controllers/task.controller";
 import { AuthController } from "../controllers/auth.controller";
@@ -12,15 +12,15 @@ import { createTaskRouter } from "../routers/task.route";
 import { createAuthRouter } from "../routers/auth.route";
 import { createAuthenticateMiddleware } from "../middlewares/authorize";
 import { OrganizationRepository } from "../repositories/implementations/organization.repository";
-import { OrganizationService } from "../services/organization.service";
+import { OrganizationService } from "../services/implementations/organization.service";
 import { OrganizationController } from "../controllers/organization.controller";
 import { createOrganizationRouter } from "../routers/organization.route";
 import { OrganizationMemberRepository } from "../repositories/implementations/organization-member.repository";
 import { BoardRepository } from "../repositories/implementations/board.repository";
-import { BoardService } from "../services/Board.service";
+import { BoardService } from "../services/implementations/Board.service";
 import { BoardController } from "../controllers/board.controller";
 import { createBoardRouter } from "../routers/board.route";
-import { MemberShipService } from "../services/membership.service";
+import { MemberShipService } from "../services/implementations/membership.service";
 import { OrganizationGuard } from "../guards/organization.guard";
 
 // Repositories
@@ -60,6 +60,7 @@ export const userRouter = createUserRouter(userController);
 export const taskRouter = createTaskRouter(taskController);
 export const authRouter = createAuthRouter(authController);
 export const organizationRouter = createOrganizationRouter(
-  organizationController
+  organizationController,
+  orgGuard
 );
 export const boardRouter = createBoardRouter(boardController, orgGuard);

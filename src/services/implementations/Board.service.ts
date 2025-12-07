@@ -1,6 +1,6 @@
 import { Board } from "@prisma/client";
-import { IBoardService } from "./interfaces/IBoardService";
-import { IBoardRepository } from "../repositories/interfaces/IBoardRepository";
+import { IBoardService } from "../interfaces/IBoardService";
+import { IBoardRepository } from "../../repositories/interfaces/IBoardRepository";
 
 export class BoardService implements IBoardService {
   constructor(private readonly boardRepository: IBoardRepository) {}

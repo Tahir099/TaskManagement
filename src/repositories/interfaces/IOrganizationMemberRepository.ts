@@ -7,7 +7,7 @@ export interface IOrganizationMemberRepository
     organizationId: string,
     userId: string,
     role?: OrganizationRole
-  ): Promise<OrganizationMember | null>;
+  ): Promise<OrganizationMember>;
 
   findMemberShip(
     organizationId: string,

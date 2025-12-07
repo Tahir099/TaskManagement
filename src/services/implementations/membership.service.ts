@@ -2,9 +2,9 @@ import {
   OrganizationRole,
   PermissionKey,
   Permissions,
-} from "../constants/permissions";
-import { AppError } from "../errors/AppError";
-import { IOrganizationMemberRepository } from "../repositories/interfaces/IOrganizationMemberRepository";
+} from "../../constants/permissions";
+import { AppError } from "../../errors/AppError";
+import { IOrganizationMemberRepository } from "../../repositories/interfaces/IOrganizationMemberRepository";
 
 export interface MembershipInfo {
   id: string;

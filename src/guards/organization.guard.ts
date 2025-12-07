@@ -1,6 +1,6 @@
-import { NextFunction , Response } from "express";
+import { NextFunction, Response } from "express";
 import { PermissionKey } from "../constants/permissions";
-import { IMemberShipService } from "../services/membership.service";
+import { IMemberShipService } from "../services/implementations/membership.service";
 import { extractOrgId, OrgIdSource } from "./extractors/org-id.extractor";
 import { GuardedRequest } from "./types";
 import { AppError } from "../errors/AppError";
@@ -13,6 +13,34 @@ interface OrgGuardOptions {
 
 export class OrganizationGuard {
   constructor(private readonly memberShipService: IMemberShipService) {}
+
+  private async resolveOrgContext(
+    req: GuardedRequest,
+    source: OrgIdSource,
+    paramName: string
+  ) {
+    if (!req.user?.id) {
+      throw new AppError("Authentication required", 401);
+    }
+
+    const orgId = extractOrgId(req, source, paramName);
+    if (!orgId) {
+      throw new AppError(`${paramName} is required`, 400);
+    }
+
+    const memberShip = await this.memberShipService.getMembership(
+      orgId,
+      req.user.id
+    );
+
+    return {
+      organizationId: orgId,
+      userId: req.user.id,
+      role: memberShip.role,
+      memberShipId: memberShip.id,
+      membership: memberShip,
+    };
+  }
 
   require(options: OrgGuardOptions) {
     const {
@@ -27,29 +55,12 @@ export class OrganizationGuard {
       next: NextFunction
     ): Promise<void> => {
       try {
-        if (!req.user?.id) {
-          throw new AppError("Authentication required", 401);
-        }
-
-        const orgId = extractOrgId(req, source, paramName);
-
-        if (!orgId) {
-          throw new AppError(`${paramName} is required`, 400);
-        }
-
-        const memberShip = await this.memberShipService.getMembership(
-          orgId,
-          req.user.id
+        const context = await this.resolveOrgContext(req, source, paramName);
+        req.orgContext = context;
+        this.memberShipService.validatePermission(
+          context.membership,
+          permission
         );
-
-        this.memberShipService.validatePermission(memberShip, permission);
-
-        req.orgContext = {
-          organizationId: orgId,
-          userId: req.user.id,
-          role: memberShip.role,
-          memberShipId: memberShip.id,
-        };
         next();
       } catch (err) {
         next(err);
@@ -59,7 +70,7 @@ export class OrganizationGuard {
 
   requireMemberShip(
     source: OrgIdSource = "params",
-    paramName = "organizationId"
+    paramName: string = "organizationId"
   ) {
     return async (
       req: GuardedRequest,
@@ -67,27 +78,7 @@ export class OrganizationGuard {
       next: NextFunction
     ): Promise<void> => {
       try {
-        if (!req.user?.id) {
-          throw new AppError("Authentication required", 401);
-        }
-
-        const orgId = extractOrgId(req, source, paramName);
-        if (!orgId) {
-          throw new AppError(`${paramName} is required`, 400);
-        }
-
-        const memberShip = await this.memberShipService.getMembership(
-          orgId,
-          req.user.id
-        );
-
-        req.orgContext = {
-          organizationId: orgId,
-          userId: req.user.id,
-          role: memberShip.role,
-          memberShipId: memberShip.id,
-        };
-
+        req.orgContext = await this.resolveOrgContext(req, source, paramName);
         next();
       } catch (err) {
         next(err);
