@@ -5,7 +5,7 @@ import { config } from "../config/index";
 import { ISessionRepository } from "../repositories/interfaces/ISessionRepository";
 
 export interface AuthenticatedRequest extends Request {
-  user?: { id: string; email: string; roleId: string };
+  user?: { id: string; email: string };
   sessionId?: string;
 }
 
@@ -40,7 +40,6 @@ export function createAuthenticateMiddleware(
       req.user = {
         id: session.user.id,
         email: session.user.email,
-        roleId: session.user.roleId,
       };
       req.sessionId = session.id;
 

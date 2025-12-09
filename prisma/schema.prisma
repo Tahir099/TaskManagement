@@ -15,8 +15,7 @@ model User {
   email       String        @unique
   password    String
   name        String
-  roleId      String
-  role        Role          @relation(fields: [roleId], references: [id])
+ 
   
   tasksCreated   Task[]             @relation("TaskCreator")
   assignments    TaskAssignment[]
@@ -29,11 +28,6 @@ model User {
   updatedAt   DateTime      @updatedAt
 }
 
-model Role {
-  id       String  @id @default(uuid())
-  name     String  @unique
-  users    User[]
-}
 
 
 model Board {

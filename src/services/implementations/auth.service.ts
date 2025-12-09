@@ -18,7 +18,6 @@ export class AuthService implements IAuthService {
     email: string,
     password: string,
     name: string,
-    roleId: string
   ): Promise<User> {
     const existingUser = await this.userRepository.findByEmail(email);
     if (existingUser) throw new AppError("User already exists", 409);
@@ -29,7 +28,6 @@ export class AuthService implements IAuthService {
       email,
       password: hashedPassword,
       name,
-      roleId,
     });
 
     return user;

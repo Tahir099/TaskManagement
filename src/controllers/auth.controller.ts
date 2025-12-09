@@ -9,12 +9,12 @@ export class AuthController {
   constructor(private readonly authService: IAuthService) {}
 
   register = asyncHandler(async (req: Request, res: Response) => {
-    const { email, password, name, roleId } = ValidationUtil.validate(
+    const { email, password, name } = ValidationUtil.validate(
       RegisterDto,
       req.body
     );
 
-    const user = await this.authService.register(email, password, name, roleId);
+    const user = await this.authService.register(email, password, name );
     res.status(201).json({
       message: "User registered successfully",
       user,

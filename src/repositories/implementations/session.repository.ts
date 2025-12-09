@@ -21,7 +21,7 @@ export class SessionRepository
         id: true,
         expiresAt: true,
         isActive: true,
-        user: { select: { id: true, email: true, roleId: true } },
+        user: { select: { id: true, email: true } },
       },
     });
   }

@@ -5,7 +5,6 @@ export interface IAuthService {
     email: string,
     password: string,
     name: string,
-    roleId: string
   ): Promise<User>;
 
   login(
