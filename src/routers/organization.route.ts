@@ -4,12 +4,19 @@ import { OrganizationGuard } from "../guards/organization.guard";
 
 export function createOrganizationRouter(
   controller: OrganizationController,
-  orgGuard:OrganizationGuard
+  orgGuard: OrganizationGuard
 ): Router {
   const router = Router();
 
   router.post("/", controller.create);
   router.get("/my", controller.getByUserId);
+
+  router.get(
+    "/:organizationId",
+    orgGuard.requireMemberShip(),
+    controller.getById
+  );
+
   router.post(
     "/:organizationId/members",
     orgGuard.require({ permission: "INVITE_MEMBER" }),

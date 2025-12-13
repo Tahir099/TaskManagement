@@ -25,8 +25,19 @@ export class OrganizationController {
     }
   );
 
+  getById = asyncHandler(async (req: GuardedRequest, res: Response) => {
+    const organizationId = req.orgContext!.organizationId;
+    const userRole = req.orgContext!.role;
+
+    const { organization, members } =
+      await this.organizationService.getOrganizationWithMembers(organizationId);
+
+    res.json({ organization, members, userRole });
+  });
+
   addMember = asyncHandler(async (req: GuardedRequest, res: Response) => {
     const { userId } = req.body;
+
     const organizationId = req.orgContext!.organizationId;
 
     const organizationMember = await this.organizationService.addMember(

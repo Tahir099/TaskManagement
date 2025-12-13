@@ -2,7 +2,12 @@ import {
   Organization,
   OrganizationMember,
   OrganizationRole,
+  User,
 } from "../../generated/prisma";
+
+export interface OrganizationMemberWithUser extends OrganizationMember {
+  user: Pick<User, "id" | "name" | "email">;
+}
 
 export interface IOrganizationService {
   createOrganization(
@@ -10,6 +15,10 @@ export interface IOrganizationService {
     creatorId: string
   ): Promise<Organization>;
   getByUserId(userId: string): Promise<Organization[]>;
+  getOrganizationWithMembers(organizationId: string): Promise<{
+    organization: Organization;
+    members: OrganizationMemberWithUser[];
+  }>;
   addMember(
     organizationId: string,
     userId: string

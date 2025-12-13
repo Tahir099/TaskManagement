@@ -6,7 +6,10 @@ import {
 } from "../../generated/prisma";
 import { IOrganizationMemberRepository } from "../../repositories/interfaces/IOrganizationMemberRepository";
 import { IOrganizationRepository } from "../../repositories/interfaces/IOrganizationRepository";
-import { IOrganizationService } from "../interfaces/IOrganizationService";
+import {
+  IOrganizationService,
+  OrganizationMemberWithUser,
+} from "../interfaces/IOrganizationService";
 
 export class OrganizationService implements IOrganizationService {
   constructor(
@@ -27,8 +30,27 @@ export class OrganizationService implements IOrganizationService {
 
     return organization;
   }
+
   getByUserId(userId: string): Promise<Organization[]> {
     return this.organizationRepository.findByUserId(userId);
+  }
+
+  async getOrganizationWithMembers(organizationId: string): Promise<{
+    organization: Organization;
+    members: OrganizationMemberWithUser[];
+  }> {
+    const organization = await this.organizationRepository.findById(
+      organizationId
+    );
+    if (!organization) {
+      throw new AppError("Organization not found", 404);
+    }
+
+    const members = (await this.organizationMemberRepository.findByOrganizationId(
+      organizationId
+    )) as unknown as OrganizationMemberWithUser[];
+
+    return { organization, members };
   }
   addMember(
     organizationId: string,
