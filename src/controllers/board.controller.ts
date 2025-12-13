@@ -16,12 +16,13 @@ export class BoardController {
   getByOrganization = asyncHandler(
     async (req: GuardedRequest, res: Response) => {
       const organizationId = req.orgContext!.organizationId;
+      const userRole = req.orgContext!.role;
 
       const boards = await this.boardService.getBoardsByOrganizationId(
         organizationId
       );
 
-      res.status(200).json(boards);
+      res.status(200).json({ boards, userRole });
     }
   );
 }
