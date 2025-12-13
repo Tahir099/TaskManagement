@@ -47,7 +47,7 @@ export class OrganizationGuard {
       permission,
       source = "params",
       paramName = "organizationId",
-    } = options;
+    } = options; 
 
     return async (
       req: GuardedRequest,
@@ -86,3 +86,4 @@ export class OrganizationGuard {
     };
   }
 }
+  

@@ -11,8 +11,11 @@ export interface OrganizationContext {
   membership: MembershipInfo;
 }
 
+import { Task } from "../../generated/prisma";
+
 export interface GuardedRequest extends AuthenticatedRequest {
   orgContext?: OrganizationContext;
+  task?: Task & { board: { organizationId: string } };
 }
 
 export type Guard = (

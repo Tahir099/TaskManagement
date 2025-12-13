@@ -22,6 +22,8 @@ import { BoardController } from "../controllers/board.controller";
 import { createBoardRouter } from "../routers/board.route";
 import { MemberShipService } from "../services/implementations/membership.service";
 import { OrganizationGuard } from "../guards/organization.guard";
+import { BoardGuard } from "../guards/board.guard";
+import { TaskGuard } from "../guards/task.guard";
 
 // Repositories
 const userRepository = new UserRepository();
@@ -51,13 +53,15 @@ const boardController = new BoardController(boardService);
 
 // Guards
 export const orgGuard = new OrganizationGuard(membershipService);
+export const boardGuard = new BoardGuard(boardService, membershipService);
+export const taskGuard = new TaskGuard(taskService, membershipService);
 
 // Middlewares
 export const Authenticate = createAuthenticateMiddleware(sessionRepository);
 
 // Routers
 export const userRouter = createUserRouter(userController);
-export const taskRouter = createTaskRouter(taskController);
+export const taskRouter = createTaskRouter(taskController, boardGuard, taskGuard);
 export const authRouter = createAuthRouter(authController);
 export const organizationRouter = createOrganizationRouter(
   organizationController,
