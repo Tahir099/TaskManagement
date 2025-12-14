@@ -39,7 +39,8 @@ const taskService = new TaskService(taskRepository);
 const authService = new AuthService(userRepository, sessionRepository);
 const organizationService = new OrganizationService(
   organizationRepository,
-  organizationMemberRepository
+  organizationMemberRepository,
+  userRepository
 );
 const boardService = new BoardService(boardRepository);
 const membershipService = new MemberShipService(organizationMemberRepository);

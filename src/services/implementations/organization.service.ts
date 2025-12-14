@@ -6,6 +6,7 @@ import {
 } from "../../generated/prisma";
 import { IOrganizationMemberRepository } from "../../repositories/interfaces/IOrganizationMemberRepository";
 import { IOrganizationRepository } from "../../repositories/interfaces/IOrganizationRepository";
+import { IUserRepository } from "../../repositories/interfaces/IUserRepository";
 import {
   IOrganizationService,
   OrganizationMemberWithUser,
@@ -14,7 +15,8 @@ import {
 export class OrganizationService implements IOrganizationService {
   constructor(
     private readonly organizationRepository: IOrganizationRepository,
-    private readonly organizationMemberRepository: IOrganizationMemberRepository
+    private readonly organizationMemberRepository: IOrganizationMemberRepository,
+    private readonly userRepository: IUserRepository
   ) {}
 
   async createOrganization(
@@ -52,11 +54,36 @@ export class OrganizationService implements IOrganizationService {
 
     return { organization, members };
   }
-  addMember(
+  async addMemberByEmail(
     organizationId: string,
-    userId: string
-  ): Promise<OrganizationMember> {
-    return this.organizationMemberRepository.addMember(organizationId, userId);
+    email: string
+  ): Promise<OrganizationMemberWithUser> {
+    const user = await this.userRepository.findByEmail(email);
+    if (!user) {
+      throw new AppError("Bu email ilə qeydiyyatdan keçmiş istifadəçi tapılmadı", 404);
+    }
+
+    const existingMember = await this.organizationMemberRepository.findMemberShip(
+      organizationId,
+      user.id
+    );
+    if (existingMember) {
+      throw new AppError("Bu istifadəçi artıq təşkilatın üzvüdür", 400);
+    }
+
+    const member = await this.organizationMemberRepository.addMember(
+      organizationId,
+      user.id
+    );
+
+    return {
+      ...member,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+    } as OrganizationMemberWithUser;
   }
 
   async removeMember(organizationId: string, userId: string): Promise<void> {

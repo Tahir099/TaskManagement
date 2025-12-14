@@ -19,10 +19,10 @@ export interface IOrganizationService {
     organization: Organization;
     members: OrganizationMemberWithUser[];
   }>;
-  addMember(
+  addMemberByEmail(
     organizationId: string,
-    userId: string
-  ): Promise<OrganizationMember>;
+    email: string
+  ): Promise<OrganizationMemberWithUser>;
 
   removeMember(organizationId: string, userId: string): Promise<void>;
   changeMemberRole(

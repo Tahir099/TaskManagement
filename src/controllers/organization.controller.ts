@@ -36,16 +36,15 @@ export class OrganizationController {
   });
 
   addMember = asyncHandler(async (req: GuardedRequest, res: Response) => {
-    const { userId } = req.body;
-
+    const { email } = req.body;
     const organizationId = req.orgContext!.organizationId;
 
-    const organizationMember = await this.organizationService.addMember(
+    const member = await this.organizationService.addMemberByEmail(
       organizationId,
-      userId
+      email
     );
 
-    res.status(201).json(organizationMember);
+    res.status(201).json(member);
   });
 
   removeMember = asyncHandler(async (req: GuardedRequest, res: Response) => {
