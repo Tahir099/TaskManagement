@@ -7,6 +7,7 @@ import { GuardedRequest } from "./types";
 
 interface TaskGuardOptions {
   permission: PermissionKey;
+  source?: "params" | "body" | "query";
   paramName?: string; 
 }
 
@@ -17,13 +18,18 @@ export class TaskGuard {
   ) {}
 
   require(options: TaskGuardOptions) {
-    const { permission, paramName = "taskId" } = options;
+    const { permission, source = "params", paramName = "taskId" } = options;
 
     return async (req: GuardedRequest, _res: Response, next: NextFunction) => {
       try {
         if (!req.user?.id) throw new AppError("Unauthorized", 401);
 
-        const taskId = req.params[paramName];
+        // Task ID-ni tap
+        let taskId: string | undefined;
+        if (source === "body") taskId = req.body[paramName];
+        else if (source === "query") taskId = req.query[paramName] as string;
+        else taskId = req.params[paramName];
+
         if (!taskId) throw new AppError(`${paramName} required`, 400);
 
         // Taskı Board məlumatı ilə birgə gətir

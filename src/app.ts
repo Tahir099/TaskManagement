@@ -5,6 +5,7 @@ import {
   authRouter,
   userRouter,
   taskRouter,
+  commentRouter,
   Authenticate,
   organizationRouter,
   boardRouter,
@@ -34,6 +35,7 @@ app.use(httpLogger);
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/tasks", Authenticate, taskRouter);
+app.use("/comments", Authenticate, commentRouter);
 app.use("/organizations", Authenticate, organizationRouter);
 app.use("/boards", Authenticate, boardRouter);
 

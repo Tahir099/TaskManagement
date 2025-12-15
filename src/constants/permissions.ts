@@ -20,6 +20,12 @@ export const Permissions = {
   DELETE_TASK: ["OWNER", "ADMIN", "MEMBER"] as OrganizationRole[],
   ASSIGN_TASK: ["OWNER", "ADMIN", "MEMBER"] as OrganizationRole[],
   VIEW_TASK: ["OWNER", "ADMIN", "MEMBER", "VIEWER"] as OrganizationRole[],
+
+  //Comment permissions
+  CREATE_COMMENT: ["OWNER", "ADMIN", "MEMBER"] as OrganizationRole[],
+  VIEW_COMMENT: ["OWNER", "ADMIN", "MEMBER", "VIEWER"] as OrganizationRole[],
+  UPDATE_COMMENT: ["OWNER", "ADMIN", "MEMBER"] as OrganizationRole[],
+  DELETE_COMMENT: ["OWNER", "ADMIN", "MEMBER"] as OrganizationRole[],
 } as const;
  
 export type PermissionKey = keyof typeof Permissions;
