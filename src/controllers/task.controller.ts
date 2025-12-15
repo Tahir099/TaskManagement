@@ -34,4 +34,36 @@ export class TaskController {
     await this.taskService.deleteTask(task.id);
     res.status(204).send();
   });
+
+  getTaskWithAssignments = asyncHandler(async (req: GuardedRequest, res: Response) => {
+    const taskId = req.params.taskId;
+    const task = await this.taskService.getTaskWithAssignments(taskId);
+    res.json(task);
+  });
+
+  assignUser = asyncHandler(async (req: GuardedRequest, res: Response) => {
+    const taskId = req.params.taskId;
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    const assignment = await this.taskService.assignUserToTask(taskId, userId);
+    res.status(201).json(assignment);
+  });
+
+  unassignUser = asyncHandler(async (req: GuardedRequest, res: Response) => {
+    const taskId = req.params.taskId;
+    const userId = req.params.userId;
+
+    await this.taskService.unassignUserFromTask(taskId, userId);
+    res.status(204).send();
+  });
+
+  getAssignments = asyncHandler(async (req: GuardedRequest, res: Response) => {
+    const taskId = req.params.taskId;
+    const assignments = await this.taskService.getTaskAssignments(taskId);
+    res.json(assignments);
+  });
 }

@@ -14,7 +14,23 @@ export class BoardRepository
   async findByOrganizationId(organizationId: string): Promise<Board[]> {
     return this.prismaModel.findMany({
       where: { organizationId },
-      include: { tasks: true },
+      include: {
+        tasks: {
+          include: {
+            assignments: {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
   }
 }

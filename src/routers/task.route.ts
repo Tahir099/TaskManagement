@@ -38,5 +38,32 @@ export function createTaskRouter(
     controller.delete
   );
 
+  router.get(
+    "/:taskId/assignments",
+    taskGuard.require({
+      permission: "VIEW_TASK",
+      paramName: "taskId",
+    }),
+    controller.getAssignments
+  );
+
+  router.post(
+    "/:taskId/assign",
+    taskGuard.require({
+      permission: "ASSIGN_TASK",
+      paramName: "taskId",
+    }),
+    controller.assignUser
+  );
+
+  router.delete(
+    "/:taskId/assign/:userId",
+    taskGuard.require({
+      permission: "ASSIGN_TASK",
+      paramName: "taskId",
+    }),
+    controller.unassignUser
+  );
+
   return router;
 }

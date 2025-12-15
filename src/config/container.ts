@@ -2,6 +2,7 @@ import { UserRepository } from "../repositories/implementations/user.repository"
 import { TaskRepository } from "../repositories/implementations/task.repository";
 import { SessionRepository } from "../repositories/implementations/session.repository";
 import { CommentRepository } from "../repositories/implementations/comment.repository";
+import { TaskAssignmentRepository } from "../repositories/implementations/task-assignment.repository";
 import { UserService } from "../services/implementations/user.service";
 import { TaskService } from "../services/implementations/task.service";
 import { AuthService } from "../services/implementations/auth.service";
@@ -33,6 +34,7 @@ import { CommentGuard } from "../guards/comment.guard";
 // Repositories
 const userRepository = new UserRepository();
 const taskRepository = new TaskRepository();
+const taskAssignmentRepository = new TaskAssignmentRepository();
 const sessionRepository = new SessionRepository();
 const organizationRepository = new OrganizationRepository();
 const organizationMemberRepository = new OrganizationMemberRepository();
@@ -41,7 +43,7 @@ const commentRepository = new CommentRepository();
 
 // Services
 const userService = new UserService(userRepository);
-const taskService = new TaskService(taskRepository);
+const taskService = new TaskService(taskRepository, taskAssignmentRepository);
 const authService = new AuthService(userRepository, sessionRepository);
 const commentService = new CommentService(commentRepository);
 const organizationService = new OrganizationService(
