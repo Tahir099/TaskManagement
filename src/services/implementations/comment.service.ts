@@ -17,7 +17,6 @@ export class CommentService implements ICommentService {
       userId,
     });
 
-    // User məlumatı ilə comment-i qaytarırıq
     return this.commentRepository.findByIdWithUser(comment.id) as Promise<Comment & { user: { id: string; name: string; email: string } }>;
   }
 

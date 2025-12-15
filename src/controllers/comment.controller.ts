@@ -23,7 +23,6 @@ export class CommentController {
       req.body
     );
 
-    // Guard artıq task-a access yoxlayıb
     const comment = await this.commentService.createComment(
       data.taskId,
       userId,
@@ -106,8 +105,7 @@ export class CommentController {
       throw new AppError("Comment ID is required", 400);
     }
 
-    // Guard artıq comment-ə və task-a access yoxlayıb
-    // İstifadəçinin öz comment-ini yoxlayırıq
+ 
     if (req.comment && req.comment.userId !== userId) {
       throw new AppError("You can only delete your own comments", 403);
     }

@@ -24,7 +24,6 @@ export class TaskGuard {
       try {
         if (!req.user?.id) throw new AppError("Unauthorized", 401);
 
-        // Task ID-ni tap
         let taskId: string | undefined;
         if (source === "body") taskId = req.body[paramName];
         else if (source === "query") taskId = req.query[paramName] as string;
@@ -32,14 +31,12 @@ export class TaskGuard {
 
         if (!taskId) throw new AppError(`${paramName} required`, 400);
 
-        // Taskı Board məlumatı ilə birgə gətir
         const task = await this.taskService.getTaskWithBoard(taskId);
         
         if (!task || !task.board) {
           throw new AppError("Task not found", 404);
         }
 
-        // Üzvlüyü və İcazəni yoxla
         const membership = await this.membershipService.getMembership(
           task.board.organizationId,
           req.user.id
@@ -54,7 +51,6 @@ export class TaskGuard {
           membership: membership,
         };
         
-        // Taskı request-ə yapışdırırıq ki, Controller təkrar sorğu atmasın
         req.task = task;
 
         next();
