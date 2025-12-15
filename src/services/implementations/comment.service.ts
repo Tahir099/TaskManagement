@@ -10,12 +10,15 @@ export class CommentService implements ICommentService {
     taskId: string,
     userId: string,
     content: string
-  ): Promise<Comment> {
-    return this.commentRepository.create({
+  ): Promise<Comment & { user: { id: string; name: string; email: string } }> {
+    const comment = await this.commentRepository.create({
       content,
       taskId,
       userId,
     });
+
+    // User məlumatı ilə comment-i qaytarırıq
+    return this.commentRepository.findByIdWithUser(comment.id) as Promise<Comment & { user: { id: string; name: string; email: string } }>;
   }
 
   async getCommentsByTaskId(

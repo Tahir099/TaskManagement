@@ -5,7 +5,7 @@ export interface ICommentService {
     taskId: string,
     userId: string,
     content: string
-  ): Promise<Comment>;
+  ): Promise<Comment & { user: { id: string; name: string; email: string } }>;
 
   getCommentsByTaskId(
     taskId: string
