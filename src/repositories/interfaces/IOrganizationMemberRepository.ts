@@ -21,5 +21,5 @@ export interface IOrganizationMemberRepository
   ): Promise<OrganizationMember>;
 
   removeMember(organizationId: string, userId: string): Promise<void>;
-  findByOrganizationId(organizationId: string): Promise<OrganizationMember>;
+  findByOrganizationId(organizationId: string): Promise<OrganizationMember[]>;
 }

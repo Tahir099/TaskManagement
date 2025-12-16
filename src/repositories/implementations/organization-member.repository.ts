@@ -67,12 +67,12 @@ export class OrganizationMemberRepository
 
   async findByOrganizationId(
     organizationId: string
-  ): Promise<OrganizationMember> {
+  ): Promise<OrganizationMember[]> {
     return this.prismaModel.findMany({
       where: {
         orgId: organizationId,
       },
       include: { user: { select: { id: true, name: true, email: true } } },
-    });
+    }) as any;
   }
 }
